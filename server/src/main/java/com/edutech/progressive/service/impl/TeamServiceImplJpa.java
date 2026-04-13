@@ -5,36 +5,44 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
+import org.springframework.stereotype.Service;
 import com.edutech.progressive.entity.Team;
-
-public class TeamServiceImplJpa  {
-
-    List<Team> list = new ArrayList<>();
-    public List<Team> getAllTeam() throws SQLException
-    {
-           return list;
+import com.edutech.progressive.repository.TeamRepository;
+import com.edutech.progressive.service.TeamService;
+@Service
+public class TeamServiceImplJpa implements TeamService {
+    private TeamRepository teamRepository;
+    public TeamServiceImplJpa(TeamRepository teamRepository) {
+        this.teamRepository = teamRepository;
     }
-    public int addTeam(Team team) throws SQLException{
-        return -1;
-        
+    public List<Team> getAllTeams()throws SQLException{
+        return teamRepository.findAll();
     }
-    public List<Team> getAllTeamsSortedByName() throws SQLException
-    {
-         return list;
+    public int addTeam(Team team)throws SQLException{
+        Team addedTeam =  teamRepository.save(team);;
+        return addedTeam.getTeamId();
     }
-
+    public List<Team> getAllTeamsSortedByName()throws SQLException{
+        List<Team> things = new ArrayList<>(teamRepository.findAll());
+        Collections.sort(things);
+        return things;
+    }
     public Team getTeamById(int teamId) throws SQLException{
-        return null;
+        return teamRepository.findByTeamId(teamId);
     }
-
-    public  void updateTeam(Team team) throws SQLException
-    {
+    public void updateTeam(Team team, int teamId) throws SQLException{
+        Team existingTeam = teamRepository.findById(teamId).orElse(null);
+        if(existingTeam!=null){
+            existingTeam.setTeamId(team.getTeamId());
+            existingTeam.setTeamName(team.getTeamName());
+            existingTeam.setLocation(team.getLocation());
+            existingTeam.setEstablishmentYear(team.getEstablishmentYear());
+            existingTeam.setOwnerName(team.getOwnerName());
+            teamRepository.save(existingTeam);
+        }
     }
-
-    public void deleteTeam(int teamId) throws SQLException
-    {
-
+    public void deleteTeam(int teamId)throws SQLException {
+        teamRepository.deleteById(teamId);
     }
 
 }

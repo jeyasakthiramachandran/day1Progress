@@ -3,10 +3,13 @@ package com.edutech.progressive.service.impl;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.edutech.progressive.dao.MatchDAO;
 import com.edutech.progressive.entity.Match;
 import com.edutech.progressive.service.MatchService;
 
+@Service
 public class MatchServiceImplJdbc implements MatchService {
 
    

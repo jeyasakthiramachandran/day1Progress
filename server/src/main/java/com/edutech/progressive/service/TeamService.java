@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface TeamService {
-List<Team> getAllTeams()throws SQLException;
+    List<Team> getAllTeams()throws SQLException;
 
     int addTeam(Team team)throws SQLException;
 
@@ -20,7 +20,7 @@ List<Team> getAllTeams()throws SQLException;
         return null;
     }
 
-    default void updateTeam(Team team) throws SQLException{}
+    default void updateTeam(Team team, int teamId) throws SQLException{}
 
     default void deleteTeam(int teamId)throws SQLException {}
 
