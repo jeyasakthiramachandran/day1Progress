@@ -2,14 +2,33 @@ package com.edutech.progressive.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+@Entity
+@Table(name = "matches")
 public class Match {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="match_id")
     private int matchId;
+    @Column(name="first_team_id")
     private int firstTeamId;
+    @Column(name="second_team_id")
     private int secondTeamId;
+    @Temporal(TemporalType.DATE)
+    @Column(name="match_date")
     private Date matchDate;
     private String venue;
     private String result;
     private String status;
+    @Column(name="winner_team_id")
     private int winnerTeamId;
     public Match() {
     }

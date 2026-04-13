@@ -1,8 +1,22 @@
 package com.edutech.progressive.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="user")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int userId;
-    private String fullNamee;
+    @Column(name = "full_name")
+    private String fullName;
+    @Column(name="username")
     private String username;
     private String password;
     private String email;
@@ -11,7 +25,7 @@ public class User {
     }
     public User(int userId, String fullNamee, String username, String password, String email, String role) {
         this.userId = userId;
-        this.fullNamee = fullNamee;
+        this.fullName = fullNamee;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -24,10 +38,10 @@ public class User {
         this.userId = userId;
     }
     public String getFullNamee() {
-        return fullNamee;
+        return fullName;
     }
     public void setFullNamee(String fullNamee) {
-        this.fullNamee = fullNamee;
+        this.fullName = fullNamee;
     }
     public String getUsername() {
         return username;
