@@ -2,9 +2,12 @@ package com.edutech.progressive.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CollectionId;
@@ -29,98 +32,108 @@ private String role;
 private int totalRuns;
 @Column(name="total_wickets")
 private int totalWickets;
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name = "team_id",insertable = false,updatable = false)
+private Team team;
+
 
 public Cricketer() {
-    }
+}
 
-    public Cricketer(int cricketerId, int teamId, String cricketerName, int age, String nationality, int experience,
-            String role, int totalRuns, int totalWickets) {
-        this.cricketerId = cricketerId;
-        this.teamId = teamId;
-        this.cricketerName = cricketerName;
-        this.age = age;
-        this.nationality = nationality;
-        this.experience = experience;
-        this.role = role;
-        this.totalRuns = totalRuns;
-        this.totalWickets = totalWickets;
-    }
 
-    public int getCricketerId() {
-        return cricketerId;
-    }
+public Cricketer(int cricketerId, int teamId, String cricketerName, int age, String nationality, int experience,
+    String role, int totalRuns, int totalWickets) {
+    this.cricketerId = cricketerId;
+    this.teamId = teamId;
+    this.cricketerName = cricketerName;
+    this.age = age;
+    this.nationality = nationality;
+    this.experience = experience;
+    this.role = role;
+    this.totalRuns = totalRuns;
+    this.totalWickets = totalWickets;
+}
 
-    public void setCricketerId(int cricketerId) {
-        this.cricketerId = cricketerId;
-    }
 
-    public int getTeamId() {
-        return teamId;
-    }
+public int getCricketerId() {
+    return cricketerId;
+}
+public void setCricketerId(int cricketerId) {
+    this.cricketerId = cricketerId;
+}
+public int getTeamId() {
+    return teamId;
+}
+public void setTeamId(int teamId) {
+    this.teamId = teamId;
+}
+public String getCricketerName() {
+    return cricketerName;
+}
+public void setCricketerName(String cricketerName) {
+    this.cricketerName = cricketerName;
+}
+public int getExperience() {
+    return experience;
+}
+public void setExperience(int experience) {
+    this.experience = experience;
+}
+public String getRole() {
+    return role;
+}
+public void setRole(String role) {
+    this.role = role;
+}
+public int getTotalRuns() {
+    return totalRuns;
+}
+public void setTotalRuns(int totalRuns) {
+    this.totalRuns = totalRuns;
+}
+public int getTotalWickets() {
+    return totalWickets;
+}
+public void setTotalWickets(int totalWickets) {
+    this.totalWickets = totalWickets;
+}
+public int getAge() {
+    return age;
+}
 
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
-    }
+public void setAge(int age) {
+    this.age = age;
+}
 
-    public String getCricketerName() {
-        return cricketerName;
-    }
 
-    public void setCricketerName(String cricketerName) {
-        this.cricketerName = cricketerName;
-    }
+public String getNationality() {
+    return nationality;
+}
 
-    public int getAge() {
-        return age;
-    }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+public void setNationality(String nationality) {
+    this.nationality = nationality;
+}
 
-    public String getNationality() {
-        return nationality;
-    }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
+@Override
+public int compareTo(Cricketer Obj) {
+    return Integer.compare(this.getExperience(),Obj.getExperience());
+}
 
-    public int getExperience() {
-        return experience;
-    }
 
-    public void setExperience(int experience) {
-        this.experience = experience;
-    }
+public Team getTeam() {
+    return team;
+}
 
-    public String getRole() {
-        return role;
+public void setTeam(Team team) {
+    this.team = team;
+    if (team != null) {
+        this.teamId = team.getTeamId();   
     }
+}
 
-    public void setRole(String role) {
-        this.role = role;
-    }
 
-    public int getTotalRuns() {
-        return totalRuns;
-    }
 
-    public void setTotalRuns(int totalRuns) {
-        this.totalRuns = totalRuns;
-    }
-
-    public int getTotalWickets() {
-        return totalWickets;
-    }
-
-    public void setTotalWickets(int totalWickets) {
-        this.totalWickets = totalWickets;
-    }
-
-    @Override
-    public int compareTo(Cricketer o) {
-        return Integer.compare(this.getExperience(),o.getExperience());
-    }
 
 }

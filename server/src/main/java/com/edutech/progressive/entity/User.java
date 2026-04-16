@@ -23,9 +23,9 @@ public class User {
     private String role;
     public User() {
     }
-    public User(int userId, String fullNamee, String username, String password, String email, String role) {
+    public User(int userId, String fullName, String username, String password, String email, String role) {
         this.userId = userId;
-        this.fullName = fullNamee;
+        this.fullName = fullName;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -37,11 +37,11 @@ public class User {
     public void setUserId(int userId) {
         this.userId = userId;
     }
-    public String getFullNamee() {
+    public String getFullName() {
         return fullName;
     }
-    public void setFullNamee(String fullNamee) {
-        this.fullName = fullNamee;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
     public String getUsername() {
         return username;

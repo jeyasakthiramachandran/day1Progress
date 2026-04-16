@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CricketerService {
 
-      List<Cricketer> getAllCricketers() throws SQLException;
+    List<Cricketer> getAllCricketers() throws SQLException;
 
     Integer addCricketer(Cricketer cricketer) throws SQLException;
 
@@ -15,6 +15,9 @@ public interface CricketerService {
 
     default void emptyArrayList() throws SQLException {
     }
+
+    //Do not implement these methods in CricketerServiceImplArraylist.java class
+  
 
     //Do not implement these methods in CricketerServiceImplArraylist.java class
     default void updateCricketer(Cricketer cricketer) throws SQLException{}
