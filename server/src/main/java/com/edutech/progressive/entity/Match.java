@@ -23,15 +23,12 @@ public class Match {
     private int matchId;
  
     @ManyToOne(cascade = CascadeType.MERGE)
- 
     @JoinColumn(name = "first_team_id")
- 
     private Team firstTeam;
  
     @ManyToOne(cascade = CascadeType.MERGE)
- 
     @JoinColumn(name = "second_team_id")
- 
+
     private Team secondTeam;
  
     @Temporal(TemporalType.DATE)

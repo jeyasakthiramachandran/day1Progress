@@ -26,7 +26,7 @@ public class CricketerDAOImpl implements CricketerDAO {
         String sql = "insert into cricketer (team_id,cricketer_name,age,nationality,experience,role,total_runs,total_wickets) values(?,?,?,?,?,?,?,?)";
         int count = -1;
             PreparedStatement ps = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, cricketer.getTeamId());
+            ps.setInt(1, cricketer.getTeam().getTeamId());
             ps.setString(2, cricketer.getCricketerName());
             ps.setInt(3, cricketer.getAge());
             ps.setString(4, cricketer.getNationality());
@@ -69,7 +69,7 @@ public class CricketerDAOImpl implements CricketerDAO {
     public void updateCricketer(Cricketer cricketer) throws SQLException{
         String sql = "update cricketer set team_id=?,cricketer_name=?,age=?,nationality=?,experience=?,role=?,total_runs=?,total_wickets=? where cricketer_id=?";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, cricketer.getTeamId());
+            ps.setInt(1, cricketer.getTeam().getTeamId());
             ps.setString(2, cricketer.getCricketerName());
             ps.setInt(3, cricketer.getAge());
             ps.setString(4, cricketer.getNationality());
