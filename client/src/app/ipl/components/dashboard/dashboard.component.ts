@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { IplService } from '../../services/ipl.service';
 import { Team } from '../../types/Team';
 import { Cricketer } from '../../types/Cricketer';
 import { Match } from '../../types/Match';
 import { TicketBooking } from '../../types/TicketBooking';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Vote } from '../../types/Vote';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,20 +15,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+
   teams: Team[] = [];
   cricketers: Cricketer[] = [];
   matches: Match[] = [];
 
-  ticketsBooked: TicketBooking[] = [];
-  allTicketsBooked: TicketBooking[] = [];
-
+  // USER
   voteList: Vote[] = [];
+  ticketsBooked: TicketBooking[] = [];
+
+  // ADMIN
   voteArray: Vote[] = [];
+  allTicketsBooked: TicketBooking[] = [];
 
   emailForm!: FormGroup;
   role!: string | null;
   userId!: number;
-  searched: boolean = false;
+  searched = false;
 
   constructor(
     private iplService: IplService,
@@ -43,132 +47,46 @@ export class DashboardComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]]
     });
 
-    /*
-      For Day 23 test case, only these 3 should load on initialization:
-      - teams
-      - cricketers
-      - matches
-
-      Do not call loadUserData() or loadAdminData() here because those methods
-      call extra service methods like getAllVotes(), getAllTicketBookings(),
-      which may not be present in the test mock service.
-    */
-    this.loadTeams();
-    this.loadCricketers();
-    this.loadMatches();
-  }
-
-  loadAdminData(): void {
+    // Load common data
     this.loadTeams();
     this.loadCricketers();
     this.loadMatches();
 
-    this.iplService.getAllTicketBookings().subscribe({
-      next: (allTicketsBooked) => {
-        this.allTicketsBooked = allTicketsBooked;
-      },
-      error: (error) => {
-        console.error('Error loading all tickets booked.', error);
-      },
-      complete: () => {
-        console.log('Ticket bookings loaded successfully.');
-      }
-    });
+    // Role specific loading
+    if (this.role === 'USER') {
+      this.loadVotes();
+    }
 
-    this.iplService.getAllVotes().subscribe({
-      next: (response) => {
-        this.voteArray = response;
-      },
-      error: (error) => {
-        console.error('Error loading votes.', error);
-      },
-      complete: () => {
-        console.log('Votes loaded successfully.');
-      }
-    });
+    if (this.role === 'ADMIN') {
+      this.loadAdminData();
+    }
   }
 
-  loadUserData(): void {
-    this.loadTeams();
-    this.loadCricketers();
-    this.loadMatches();
-
-    /*
-      Do not call getAllVotes() automatically for the test.
-      If needed in real app, you can call loadVotes() separately.
-    */
-  }
-
-  loadVotes(): void {
-    this.iplService.getAllVotes().subscribe({
-      next: (response) => {
-        this.voteList = response;
-      },
-      error: (error) => {
-        console.error('Error loading votes.', error);
-      },
-      complete: () => {
-        console.log('Votes loaded successfully.');
-      }
-    });
-  }
+  /* ---------------- COMMON LOADERS ---------------- */
 
   loadTeams(): void {
-    this.iplService.getAllTeams().subscribe({
-      next: (response) => {
-        this.teams = response;
-      },
-      error: (error) => {
-        console.error('Error loading teams', error);
-      },
-      complete: () => {
-        console.log('Teams loaded successfully.');
-      }
-    });
+    this.iplService.getAllTeams().subscribe(res => this.teams = res);
   }
 
   loadCricketers(): void {
-    this.iplService.getAllCricketers().subscribe({
-      next: (response) => {
-        this.cricketers = response;
-      },
-      error: (error) => {
-        console.error('Error loading cricketers', error);
-      },
-      complete: () => {
-        console.log('Cricketers loaded successfully.');
-      }
-    });
+    this.iplService.getAllCricketers().subscribe(res => this.cricketers = res);
   }
 
   loadMatches(): void {
-    this.iplService.getAllMatches().subscribe({
-      next: (response) => {
-        this.matches = response;
-      },
-      error: (error) => {
-        console.error('Error loading matches', error);
-      },
-      complete: () => {
-        console.log('Matches loaded successfully.');
-      }
-    });
+    this.iplService.getAllMatches().subscribe(res => this.matches = res);
+  }
+
+  /* ---------------- USER FUNCTIONS ---------------- */
+
+  loadVotes(): void {
+    this.iplService.getAllVotes().subscribe(res => this.voteList = res);
   }
 
   loadTicketsBooked(): void {
     const email = this.emailForm.get('email')?.value;
-
-    this.iplService.getBookingsByUserEmail(email).subscribe({
-      next: (response) => {
-        this.ticketsBooked = response;
-        this.searched = true;
-      },
-      error: (error) => {
-        console.error('Error loading tickets booked', error);
-      },
-      complete: () => {
-        console.log('Tickets booked loaded successfully.');
-      }
+    this.iplService.getBookingsByUserEmail(email).subscribe(res => {
+      this.ticketsBooked = res;
+      this.searched = true;
     });
   }
 
@@ -178,60 +96,40 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  editTeam(teamId: number): void {
-    this.router.navigate(['/ipl/team/edit', teamId]);
+  /* ---------------- ADMIN FUNCTIONS ---------------- */
+
+  loadAdminData(): void {
+    this.iplService.getAllVotes().subscribe(res => this.voteArray = res);
+    this.iplService.getAllTicketBookings().subscribe(res => this.allTicketsBooked = res);
   }
 
-  editCricketer(cricketerId: number): void {
-    this.router.navigate(['/ipl/cricketer/edit', cricketerId]);
+  editTeam(id: number): void {
+    this.router.navigate(['/ipl/team/edit', id]);
   }
 
-  editMatch(matchId: number): void {
-    this.router.navigate(['/ipl/match/edit', matchId]);
+  editCricketer(id: number): void {
+    this.router.navigate(['/ipl/cricketer/edit', id]);
   }
 
-  deleteTeam(teamId: number): void {
-    if (confirm('Are you sure you want to delete this team?')) {
-      this.iplService.deleteTeam(teamId).subscribe({
-        next: () => {
-          alert('Team deleted successfully.');
-          this.loadAdminData();
-        },
-        error: (error) => {
-          console.error('Error deleting team:', error);
-          alert('Unable to delete team');
-        }
-      });
+  editMatch(id: number): void {
+    this.router.navigate(['/ipl/match/edit', id]);
+  }
+
+  deleteTeam(id: number): void {
+    if (confirm('Delete team?')) {
+      this.iplService.deleteTeam(id).subscribe(() => this.loadAdminData());
     }
   }
 
-  deleteCricketer(cricketerId: number): void {
-    if (confirm('Are you sure you want to delete this cricketer?')) {
-      this.iplService.deleteCricketer(cricketerId).subscribe({
-        next: () => {
-          alert('Cricketer deleted successfully.');
-          this.loadAdminData();
-        },
-        error: (error) => {
-          console.error('Error deleting cricketer:', error);
-          alert('Unable to delete cricketer');
-        }
-      });
+  deleteCricketer(id: number): void {
+    if (confirm('Delete cricketer?')) {
+      this.iplService.deleteCricketer(id).subscribe(() => this.loadAdminData());
     }
   }
 
-  deleteMatch(matchId: number): void {
-    if (confirm('Are you sure you want to delete this Match?')) {
-      this.iplService.deleteMatch(matchId).subscribe({
-        next: () => {
-          alert('Match deleted successfully.');
-          this.loadAdminData();
-        },
-        error: (error) => {
-          console.error('Error deleting match:', error);
-          alert('Unable to delete match');
-        }
-      });
+  deleteMatch(id: number): void {
+    if (confirm('Delete match?')) {
+      this.iplService.deleteMatch(id).subscribe(() => this.loadAdminData());
     }
   }
 }
