@@ -10,7 +10,7 @@
 <select formControlName="match">
 <option value="">Select a Match</option>
 <option *ngFor="let match of matches" [ngValue]="match">
-              {{ match.firstTeam.teamName }} vs {{ match.secondTeam.teamName }}
+              {{ match.firstTeam?.teamName }} vs {{ match.secondTeam?.teamName }}
 </option>
 </select>
 </div>
