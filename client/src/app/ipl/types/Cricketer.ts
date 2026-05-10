@@ -19,7 +19,7 @@ export class Cricketer {
  
     totalWickets: number;
  
-    team: Team;  // Establish ManyToOne relationship
+    team!: Team;  // Establish ManyToOne relationship
  
     constructor(
  
@@ -39,7 +39,7 @@ export class Cricketer {
  
         totalWickets: number,
  
-        team: Team
+        teamId: number
  
     ) {
  
@@ -59,7 +59,7 @@ export class Cricketer {
  
         this.totalWickets = totalWickets;
  
-        this.team = team;  // Link cricketer to a team
+        this.team.teamId = teamId;  // Link cricketer to a team
  
     }
  

@@ -18,7 +18,7 @@ import { Cricketer } from "../../types/Cricketer";
 
 export class CricketerSampleComponent {
 
-  cricketer: Cricketer = new Cricketer(1,1,"Virat",32,"Indian",14,"Batsman",580,50);
+  cricketer: Cricketer = new Cricketer(1,"Virat",32,"Indian",14,"Batsman",580,50,1);
 
 }
  

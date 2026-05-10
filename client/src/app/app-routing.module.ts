@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
+ 
 const routes: Routes = [
   {
     path: 'auth',
@@ -13,10 +13,10 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/auth',  // Redirect to 'auth' route by default
+    redirectTo: '/auth/login',
   }
 ];
-
+ 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
